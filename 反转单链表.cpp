@@ -54,21 +54,25 @@ void TraverseList(LinkList L, void (*visit)(ElemType)){
 
 //反转单链表
 LinkList ReserseList(LinkList L){
-	LinkList p = NULL;
-	LinkList q = L;
-
-	while(q){
-		LinkList nextq = q->next;
-        q->next = p;
-        p = q;
-        q = nextq;
+	LinkList current,pnext,prev;
+	if(L == NULL || L->next == NULL)
+		return L;
+	current = L->next;
+	pnext = current->next;
+	current->next = NULL;
+	while(pnext){
+		prev = pnext->next;
+		pnext->next = current;
+		current = pnext;
+		pnext = prev;
 	}
-	return p;
+	L->next = current;
+	return L;
 }   
 
 int main(){
 	LinkList L, *head, newHead, newList;
-	CreateListTail(&L, 5);
+	CreateListTail(&L, 10);
 	printf("List:");
 	TraverseList(L, visit);
 
