@@ -34,5 +34,5 @@ Status Pop(SqDoubleStack *S, SElemType e, int stackNumber){
 			return ERROR;
 		*e = S->data[S->top2++];
 	}
-	return OK
+	return OK;
 }
