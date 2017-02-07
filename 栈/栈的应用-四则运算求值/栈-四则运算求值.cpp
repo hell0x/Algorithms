@@ -149,6 +149,9 @@ int priority(char c){
 	return ret;
 }
 
+int infixToSuffix(){
+	
+}
 
 int main(void){
 	LinkStack S;
