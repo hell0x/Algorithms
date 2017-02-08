@@ -21,13 +21,7 @@ typedef struct LinkStack{
 
 //栈的初始化
 Status init(LinkStack *S){
-	S->top = (LinkStackPtr)malloc(sizeof(StackNode));
-
-	if(NULL == S->top)
-		return ERROR;
-	else{
-		S->top->next = NULL;
-	}
+	S->top = NULL;
 	return OK;
 }
 
@@ -49,6 +43,14 @@ Status Push(LinkStack *S, SElemType e){
 	return OK;
 }
 
+//获取栈顶元素
+Status Top(LinkStack *S){
+	if(S->top == NULL){
+		return NULL;
+	}
+	return S->top->data;
+}
+
 //出栈
 Status Pop(LinkStack *S, SElemType *e){
 	LinkStackPtr p;
@@ -68,7 +70,7 @@ Status traverse(LinkStack *S){
 	if(StackEmpty(S))
 		return OK;
 	printf("Elements:");
-	while(p->next){
+	while(p){
 		printf("%d ", p->data);
 		p = p->next;
 	}
@@ -103,6 +105,7 @@ int main(void){
 	Pop(&S, &e);
 	printf("%d\n", e);
 	traverse(&S);
+	printf("%d\n",Top(&S));
 	clearStack(&S);
 	traverse(&S);
 
