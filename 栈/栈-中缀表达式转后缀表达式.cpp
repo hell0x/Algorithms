@@ -22,13 +22,7 @@ typedef struct LinkStack{
 
 //栈的初始化
 Status init(LinkStack *S){
-	S->top = (LinkStackPtr)malloc(sizeof(StackNode));
-
-	if(NULL == S->top)
-		return ERROR;
-	else{
-		S->top->next = NULL;
-	}
+	S->top = NULL;
 	return OK;
 }
 
@@ -50,6 +44,14 @@ Status Push(LinkStack *S, SElemType e){
 	return OK;
 }
 
+//获取栈顶元素
+Status Top(LinkStack *S){
+	if(S->top == NULL){
+		return NULL;
+	}
+	return S->top->data;
+}
+
 //出栈
 Status Pop(LinkStack *S, SElemType *e){
 	LinkStackPtr p;
@@ -68,9 +70,8 @@ Status traverse(LinkStack *S){
 	LinkStackPtr p = S->top;
 	if(StackEmpty(S))
 		return OK;
-	printf("Elements:");
-	while(p->next){
-		printf("%d ", p->data);
+	while(p){
+		printf("%c ", p->data);
 		p = p->next;
 	}
 	printf("\n");
@@ -110,7 +111,7 @@ int isNumber(char c){
  */
 int isMark(char c){
 	int ret = 0;
-	ret = (c == '+') || (c == '-') || (c == '*') || (c == '/');
+	ret = ((c == '+') || (c == '-') || (c == '*') || (c == '/'));
 	return ret;
 }
 
@@ -135,37 +136,61 @@ int isRBracket(char c){
 }
 
 /**
- * Priority
+ * priority
  * 对传进来的元素划分优先级
  */
 int priority(char c){
 	int ret = 0;
 	if(c == '+' || c == '-')
-		ret = 1;
-	else if(c == '*' || c == '/')
 		ret = 2;
-	else
+	else if(c == '*' || c == '/')
 		ret = 3;
+	else
+		ret = 1;
 	return ret;
 }
 
-int infixToSuffix(){
-	
-}
-
-int main(void){
+int infixToSuffix(char *c){
+	int ret = 0;
+	int i = 0;
 	LinkStack S;
 	SElemType e;
 	init(&S);
-	for(int n=0; n<10; n++){
-		Push(&S, n+1);
+
+	while(c[i] != '\0'){
+		if(isNumber(c[i])){
+			printf("%c ", c[i]);
+		}else if(isLBracket(c[i])){
+			Push(&S, c[i]);
+		}else if(isMark(c[i])){
+			if(StackEmpty(&S)){
+				Push(&S, c[i]);
+			}else{
+				while(priority(c[i]) <= priority(Top(&S))){
+					Pop(&S, &e);
+					printf("%c ", e);
+				}
+				Push(&S, c[i]);
+			}
+		}else if(isRBracket(c[i])){
+			while(Top(&S) != '('){
+				Pop(&S, &e);
+				printf("%c ", e);
+			}
+			Pop(&S, &e);
+		}else{
+			printf("input error\n");
+		}
+		i++;
 	}
 	traverse(&S);
-	Pop(&S, &e);
-	printf("%d\n", e);
-	traverse(&S);
 	clearStack(&S);
-	traverse(&S);
+	return OK;
+}
 
+int main(void){
+	char *c;
+	scanf("%s", c);
+	infixToSuffix(c);
 	return 0;
 }
