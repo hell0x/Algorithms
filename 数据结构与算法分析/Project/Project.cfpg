@@ -1,0 +1,6 @@
+<Projects version="2.0">
+	<Project active="1">Project.cfp</Project>
+	<File active="0">..\fatal.h</File>
+	<File active="1">..\linkedlist.c</File>
+	<File active="0">..\linkedlist.h</File>
+</Projects>
