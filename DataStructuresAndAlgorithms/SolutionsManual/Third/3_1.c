@@ -12,6 +12,8 @@ typedef PtrNode List;
 typedef PtrNode Position;
 
 void Insert(ElementType X, List L, Position P);
+void PrintList(List L);
+Position Tail(List L);
 #endif
 
 struct Node{
@@ -30,19 +32,32 @@ void Insert(ElementType X, List L, Position P){
 	P->Next = TmpCell;
 }
 
+void PrintList(List L){
+	while(L->Next != NULL){
+		printf("%d ", L->Next->Element);
+		L = L->Next;
+	}
+}
+
+Position Tail(List L){
+	Position P;
+	P = L;
+	while(P->Next != NULL)
+		P = P->Next;
+	return P;
+}
+
 int main(){
 	int i;
 	List L;
 	Position P;
 	L = malloc(sizeof(struct Node));
 	L->Next = NULL;
-	P = L;
-	while(scanf("%d", &i) == 1)
+	P = Tail(L);
+	while(scanf("%d", &i) == 1){
 		Insert(i, L, P);
-	
-	while(P->Next != NULL){
-		printf("%d",P->Next->Element);
-        P = P->Next;
+		P = Tail(L);
 	}
+	PrintList(L);
 	return 0;
 }
